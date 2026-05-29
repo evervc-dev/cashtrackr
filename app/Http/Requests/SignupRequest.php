@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 use Override;
 
 class SignupRequest extends FormRequest
@@ -22,7 +23,15 @@ class SignupRequest extends FormRequest
         return [
             'name.required' => 'El nombre es obligatorio',
             'email.required' => 'El email es obligatorio',
-            'email.email' => 'El email no es válido'
+            'email.email' => 'El email no es válido',
+            'password.required' => 'La contraseña es obligatoria',
+            'password.confirmed' => 'Las contraseñas no coinciden',
+            'password.min' => 'La contraseña debe tener al menos :min caracteres',
+            'password.mixed' => 'La contraseña debe tener al menos 1 letra mayúscula y 1 minúscula',
+            'password.symbols' => 'La contraseña debe tener al menos 1 caracter especial (^@_-.*)',
+            'password.numbers' => 'La contraseña debe tener al menos 1 número',
+            'password.uncompromised' => 'La contraseña está comprometida, elige una más segura'
+            
         ];
     }
 
@@ -35,7 +44,14 @@ class SignupRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
-            'email' => ['required', 'email']
+            'email' => ['required', 'email'],
+            'password' => ['required', 'confirmed', 
+                Password::min(8)
+                ->mixedCase()
+                ->symbols()
+                ->numbers()
+                ->uncompromised()
+            ]
         ];
     }
 }

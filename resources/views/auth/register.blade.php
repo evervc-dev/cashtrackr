@@ -49,6 +49,10 @@
         />
     </div>
 
+    @error('password')
+        <p class="text-red-600">{{ $message }}</p>
+    @enderror
+
     <div class="space-y-2">
         <label class="font-bold text-2xl block" for="password_confirmation">Repetir Password</label>
 
