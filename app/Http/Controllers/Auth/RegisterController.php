@@ -28,5 +28,7 @@ class RegisterController extends Controller
 
         // Autentica al usuario para validar el email a través de la ruta generada (ya necesita tener una sesión)
         Auth::login($user);
+
+        return redirect()->route('verification.notice');
     }
 }
