@@ -7,6 +7,7 @@ use App\Http\Requests\SignupRequest;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -24,5 +25,8 @@ class RegisterController extends Controller
 
         // Evento de registro del usuario para la verificación de email
         event(new Registered($user));
+
+        // Autentica al usuario para validar el email a través de la ruta generada (ya necesita tener una sesión)
+        Auth::login($user);
     }
 }
