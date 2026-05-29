@@ -18,7 +18,7 @@ class SignupRequest extends FormRequest
     }
 
     #[Override]
-    public function messages() : array
+    public function messages(): array
     {
         return [
             'name.required' => 'El nombre es obligatorio',
