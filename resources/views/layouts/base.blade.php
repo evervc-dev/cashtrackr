@@ -22,10 +22,12 @@
                 <div class="w-full max-w-100">
                     <img src="{{ asset('img/logo.svg') }}" alt="CashTrackr Logo" class="w-full block"/>
                 </div>
-                <nav>
-                    <a href="{{ route('login') }}" class="text-white font-bold uppercase p-2">Iniciar Sesión</a>
-                    <a href="{{ route('register') }}" class="font-bold border-2 border-amber-500 px-5 py-2 text-amber-500">Crear Cuenta</a>
-                </nav>
+                @if (Route::has('login'))
+                    <nav>
+                        <a href="{{ route('login') }}" class="text-white font-bold uppercase p-2">Iniciar Sesión</a>
+                        <a href="{{ route('register') }}" class="font-bold border-2 border-amber-500 px-5 py-2 text-amber-500">Crear Cuenta</a>
+                    </nav>
+                @endif
             </div>
         </header>
 
