@@ -16,10 +16,14 @@ class LoginController extends Controller
 
     public function store(SignInRequest $request) 
     {
+        // Valida los datos
         $data = $request->validated();
 
-        if (!Auth::attempt($data)) {
+        // Verifica las credenciales (true => mantener la sesión)
+        if (!Auth::attempt($data, true)) {
             return back()->with('error', 'Credenciales incorrectas');
         }
+
+        return redirect()->route('dashboard');
     }
 }
