@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Event;
 
 uses(RefreshDatabase::class);
 
-it('shows the registration screen', function() {
+it('Shows the registration screen', function() {
     $response = $this->get(route('register'));
 
     // Formas de validar si existe la página de registro
@@ -24,7 +24,7 @@ it('shows the registration screen', function() {
     ]);
 });
 
-
+// Happy Path
 it('Register a new user unverified and dispatches the registered event', function() {
     // Evita que se envíen los emails (para evitar el consumo)
     Event::fake();
@@ -46,4 +46,14 @@ it('Register a new user unverified and dispatches the registered event', functio
     expect($user->hasVerifiedEmail())->toBeFalse(); // Indica que la cuenta aún no esté verificada
 
     Event::assertDispatched(Registered::class);
+});
+
+it('Should validate required fields when the request body is empty', function() {
+    $response = $this->post(route('register.store'), []);
+
+    $response->assertSessionHasErrors([
+        'name' => 'El nombre es obligatorio',
+        'email' => 'El email es obligatorio',
+        'password'  => 'La contraseña es obligatoria'
+    ]);
 });
