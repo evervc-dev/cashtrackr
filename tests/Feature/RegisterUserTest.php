@@ -57,3 +57,24 @@ it('Should validate required fields when the request body is empty', function() 
         'password'  => 'La contraseña es obligatoria'
     ]);
 });
+
+it('Prevents duplicate email addresses', function() {
+    // Crea un usuario con un email específico y los demás datos generados aleatoriamente
+    User::factory()->create([
+        'email' => 'juanperez23@gamil.com'
+    ]);
+
+    // Intentamos crear otro usuario con el mismo email del factory para generar el error
+    $response = $this->post(route('register.store'), [
+        'name' => 'Juan Pérez',
+        'email' => 'juanperez23@gamil.com',
+        'password' => 'Xq7#vL2!pR9@tF3%',
+        'password_confirmation' => 'Xq7#vL2!pR9@tF3%'
+    ]);
+
+    $response->assertRedirect();
+
+    $response->assertSessionHasErrors([
+        'email' => 'El email ya está registrado'
+    ]);
+});
