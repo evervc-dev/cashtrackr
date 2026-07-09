@@ -39,9 +39,7 @@ it('Does not log in with valid credentials', function () {
     ]);
 
     $response->assertRedirect(route('login'));
-    $response->assertSessionHasErrors([
-        'email' => 'Credenciales incorrectas'
-    ]);
+    $response->assertSessionHas('error', 'Credenciales incorrectas');
 
     $this->assertGuest();
 });
