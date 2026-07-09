@@ -79,3 +79,18 @@ it('Allow access to dashboard if email is verified', function() {
     $response = $this->actingAs($user)->get(route('dashboard'));
     $response->assertOk();
 });
+
+
+it('Fails login if user does not exist', function() {
+    $response = $this->from(route('login'))->post(route('login.store'), [
+        'email' => 'noexiste@gamil.com',
+        'password' => 'password123'
+    ]);
+
+    $response->assertRedirect(route('login'));
+    $response->assertSessionHasErrors([
+        'email' => 'No se ha encontrado una cuenta con ese correo.'
+    ]);
+
+    $this->assertGuest();
+});
