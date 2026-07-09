@@ -61,3 +61,21 @@ it('Prevents unverified user from accessing dashboard', function() {
     $dashboardResponse = $this->get(route('dashboard'));
     $dashboardResponse->assertRedirect(route('verification.notice'));
 });
+
+it('Does not allows access to dashboard if email is not verified', function() {
+    $user = User::factory()->create([
+        'email_verified_at' => null
+    ]);
+
+    $response = $this->actingAs($user)->get(route('dashboard'));
+    $response->assertRedirect(route('verification.notice'));
+});
+
+it('Allow access to dashboard if email is verified', function() {
+    $user = User::factory()->create([
+        'email_verified_at' => now()
+    ]);
+
+    $response = $this->actingAs($user)->get(route('dashboard'));
+    $response->assertOk();
+});
