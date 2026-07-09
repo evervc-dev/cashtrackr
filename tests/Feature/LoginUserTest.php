@@ -44,3 +44,20 @@ it('Does not log in with valid credentials', function () {
     $this->assertGuest();
 });
 
+it('Prevents unverified user from accessing dashboard', function() {
+    $user = User::factory()->unverified()->create([
+        'email' => 'juanperez23@gamil.com',
+        'password' => bcrypt('Xq7#vL2!pR9@tF3%')
+    ]);
+
+    $response = $this->post(route('login.store'), [
+        'email' => $user->email,
+        'password' => 'Xq7#vL2!pR9@tF3%',
+    ]);
+
+    $response->assertRedirect(route('dashboard'));
+    $this->assertAuthenticated();
+
+    $dashboardResponse = $this->get(route('dashboard'));
+    $dashboardResponse->assertRedirect(route('verification.notice'));
+});
