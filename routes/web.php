@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\LogoutController;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -40,6 +41,4 @@ Route::post('/email/verification-notification', function(Request $request) {
     // y el otro 1 es en la cantidad de tiempo que se pueden enviar, es decir, lo siguiente permite 1 peticón en cada (1) minuto
 })->middleware(['auth', 'throttle:1,1'])->name('verification.send');
 
-Route::get('dashboard', function() {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('dashboard', [BudgetController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
