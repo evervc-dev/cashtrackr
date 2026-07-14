@@ -41,4 +41,7 @@ Route::post('/email/verification-notification', function(Request $request) {
     // y el otro 1 es en la cantidad de tiempo que se pueden enviar, es decir, lo siguiente permite 1 peticón en cada (1) minuto
 })->middleware(['auth', 'throttle:1,1'])->name('verification.send');
 
-Route::get('dashboard', [BudgetController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::prefix('/dashboard')->group(function() {
+    Route::get('/', [BudgetController::class, 'index'])->name('dashboard');
+    Route::get('/budgets/create', [BudgetController::class, 'create'])->name('budgets.create');
+});
