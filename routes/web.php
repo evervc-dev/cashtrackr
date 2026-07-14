@@ -44,4 +44,5 @@ Route::post('/email/verification-notification', function(Request $request) {
 Route::prefix('/dashboard')->group(function() {
     Route::get('/', [BudgetController::class, 'index'])->name('dashboard');
     Route::get('/budgets/create', [BudgetController::class, 'create'])->name('budgets.create');
+    Route::post('/budgets', [BudgetController::class, 'store'])->name('budgets.store');
 });
