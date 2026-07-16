@@ -6,6 +6,7 @@ use App\Http\Requests\BudgetRequest;
 use App\Models\Budget;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Attributes\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
 
 #[Middleware('auth')]
 #[Middleware('verified')]
@@ -33,6 +34,19 @@ class BudgetController extends Controller
     public function store(BudgetRequest $request)
     {
         $data = $request->validated();
+
+        // Sin Eloquent
+        /* $budget = Budget::create([
+            'name' => $data['name'],
+            'amount' => $data['amount'],
+            'type' => $data['type'],
+            'user_id' => Auth::id()
+        ]); */
+
+        // Con Eloquent
+        $budget = Auth::user()->budgets()->create($data);
+
+        return redirect()->route('dashboard');
     }
 
     /**
