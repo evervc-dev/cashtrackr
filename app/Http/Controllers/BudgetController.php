@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BudgetRequest;
 use App\Models\Budget;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Attributes\Controllers\Authorize;
 use Illuminate\Routing\Attributes\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
@@ -85,8 +84,10 @@ class BudgetController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    #[Authorize('delete', 'budget')]
     public function destroy(Budget $budget)
     {
-        //
+        $budget->delete();
+        return redirect()->route('dashboard')->with('success', 'Presupuesto eliminado correctamente');
     }
 }
