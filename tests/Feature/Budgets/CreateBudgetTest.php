@@ -12,12 +12,11 @@ it('Validates required fields when creating a budget', function(){
 
     $response = $this->actingAs($user)
         ->from(route('budgets.create'))
-        ->post(route('budgets.store', [
+        ->post(route('budgets.store'), [
             'name' => '',
             'amount' => '',
             'type' => ''
-        ])
-    );
+        ]);
 
     $response->assertRedirect(route('budgets.create'));
     $response->assertSessionHasErrors([
@@ -25,4 +24,14 @@ it('Validates required fields when creating a budget', function(){
         'amount',
         'type'
     ]);
+});
+
+it('Does not allow guest to create budget', function() {
+    $response = $this->post(route('budgets.store'), [
+        'name' => 'Boda',
+        'amount' => 1000,
+        'type' => 'goal'
+    ]);
+
+    $response->assertRedirect(route('login'));
 });
